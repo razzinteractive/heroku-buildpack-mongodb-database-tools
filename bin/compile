@@ -12,8 +12,9 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 HEROKU_DIR=$BUILD_DIR/.heroku
+MONGO_TOOLS_DIR=$HEROKU_DIR/mongodb-database-tools
 
-mkdir -p $HEROKU_DIR/mongo
+mkdir -p $MONGO_TOOLS_DIR
 warnings=$(mktemp)
 
 # Install mongodb to use mongo commands
@@ -25,9 +26,9 @@ download_url="https://fastdl.mongodb.org/tools/db/${BASE_FILE_NAME}.tgz"
 curl $download_url -s -o - | tar xzf - -C /tmp
 
 # Move mongodb binaries into the app directory
-mv /tmp/${BASE_FILE_NAME}/* $HEROKU_DIR/mongo
-chmod +x $HEROKU_DIR/mongo/bin/*
+mv /tmp/${BASE_FILE_NAME}/* $MONGO_TOOLS_DIR
+chmod +x $MONGO_TOOLS_DIR/bin/*
 
 echo "Creating run-time environment"
 mkdir -p $BUILD_DIR/.profile.d
-echo "export PATH=\"\$HOME/.heroku/mongo/bin:\$PATH\"" > $BUILD_DIR/.profile.d/mongo.sh
+echo "export PATH=\"\$HOME/.heroku/mongodb-database-tools/bin:\$PATH\"" > $BUILD_DIR/.profile.d/mongodb-database-tools.sh
